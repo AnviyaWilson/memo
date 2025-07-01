@@ -60,6 +60,8 @@ function createBoard() {
     card.innerHTML = '';
     board.appendChild(card);
     card.addEventListener('click', () => flipCard(card));
+card.addEventListener('touchstart', () => flipCard(card)); // 📱 add this for phones
+
   });
 }
 
