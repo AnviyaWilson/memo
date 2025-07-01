@@ -3,13 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Memory Game</title>
+  <title>Memory Game - Level 1</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Memory Card Game</h1>
+  <div class="top-bar">
+    <span id="level">Level: 1</span>
+    <span id="timer">Time Left: 30s</span>
+    <div id="warning" class="hidden">⚠️ Only 10 seconds left!</div>
+    <div id="settings-icon">⚙️</div>
+    <div class="controls">
+  <button id="pauseBtn">⏸️ Pause</button>
+  <button id="restartBtn">🔄 Restart</button>
+</div>
+
+  </div>
+<div id="settings-panel" class="hidden">
+  <label><input type="checkbox" id="soundToggle" checked /> Sound</label>
+  <label><input type="checkbox" id="vibrationToggle" checked /> Vibration</label>
+</div>
+
   <div class="game-board" id="gameBoard"></div>
-  <div id="congrats" class="hidden">🎉 Congratulations! You matched all the cards! 🎉</div>
+
+  <div id="congrats" class="hidden">
+    🎉 Congratulations! Level 1 complete 🎉
+  </div>
+<!-- Audio elements -->
+<audio id="flipSound" src="sounds/flip.mp3"></audio>
+<audio id="wrongSound" src="sounds/wrong.mp3"></audio>
+
   <script src="script.js"></script>
 </body>
 </html>
