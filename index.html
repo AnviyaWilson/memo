@@ -1,42 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Memory Game</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="top-bar">
-    <div class="left">
-      <span id="level">Level: 1</span>
+  <div class="top-bar">
+    <span id="level">Level: 1</span>
+    <span id="timer">Time Left: 30s</span>
+    <div id="warning" class="hidden">⚠️ Only 10 seconds left!</div>
+    <div class="controls">
+      <button id="pauseBtn">⏸️ Pause</button>
+      <button id="restartBtn">🔄 Restart</button>
+      <button id="leaveBtn">🏠 Leave</button>
     </div>
-
-    <div class="center">
-      <span id="timer">Time Left: 30s</span>
-      <div id="warning" class="hidden">⚠️ Only 10 seconds left!</div>
-    </div>
-
-    <div class="right">
-      <button id="pauseBtn" class="btn">⏸️ Pause</button>
-      <button id="restartBtn" class="btn">🔄 Restart</button>
-      <button id="leaveBtn" class="btn">🏠 Leave</button>
-      <span id="settings-icon" class="settings-icon">⚙️</span>
-    </div>
-  </header>
-
-  <div id="settings-panel" class="settings-panel hidden">
-    <label><input type="checkbox" id="vibrationToggle" checked /> Vibration</label>
   </div>
 
-  <main>
-    <div id="gameBoard" class="game-board" aria-live="polite"></div>
-  </main>
+  <div class="game-board" id="gameBoard"></div>
 
-  <div id="congrats" class="congrats hidden">🎉 Level Complete! 🎉</div>
-  <div id="blastAnimation" class="blast hidden">💥</div>
+  <div id="congrats" class="hidden">
+    🎉 Congratulations! Level complete 🎉
+  </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
