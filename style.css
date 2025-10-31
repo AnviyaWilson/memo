@@ -4,28 +4,41 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
+  font-family: "Poppins", Arial, sans-serif;
+  background: linear-gradient(135deg, #e9f0ff, #fff);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  overflow-x: hidden;
 }
 
+/* 🌟 TOP BAR */
 .top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 10px;
+  padding: 15px;
+  width: 100%;
+  max-width: 900px;
+  background: #ffffffd9;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  margin-top: 10px;
+}
+
+#level {
+  font-weight: bold;
+  font-size: 18px;
+  color: #333;
 }
 
 #timer {
   font-weight: bold;
   font-size: 18px;
+  color: #1a237e;
 }
 
 #warning {
@@ -36,43 +49,107 @@ html, body {
 
 #settings-icon {
   cursor: pointer;
-  font-size: 18px;
+  font-size: 22px;
 }
 
+/* 🌟 GAME BOARD AUTO LAYOUT */
 .game-board {
   display: grid;
-  grid-template-columns: repeat(4, 100px);
   gap: 10px;
   justify-content: center;
-  margin-top: 20px;
+  align-items: center;
+  margin: 30px auto;
+  width: 90%;
+  max-width: 800px;
+
+  /* 👇 Automatically fit cards evenly */
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  transition: all 0.3s ease;
 }
 
+/* 🌟 LEVEL-SPECIFIC GRID ADJUSTMENT */
+.game-board.level-1 { grid-template-columns: repeat(4, 1fr); }
+.game-board.level-2 { grid-template-columns: repeat(4, 1fr); }
+.game-board.level-3 { grid-template-columns: repeat(5, 1fr); }
+.game-board.level-4 { grid-template-columns: repeat(6, 1fr); }
+.game-board.level-5 { grid-template-columns: repeat(7, 1fr); }
+
+/* 🌟 CARD STYLE */
 .card {
-  width: 100px;
-  height: 100px;
-  background-color: #007acc;
-  border-radius: 8px;
+  width: 80px;
+  height: 80px;
+  background-color: #4527a0;
+  border: 2px solid #2e225b;
+  border-radius: 10px;
+  color: transparent;
+  font-size: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
-  font-size: 30px;
   cursor: pointer;
-  transition: background 0.3s;
+  user-select: none;
+  perspective: 800px;
+  transition: transform 0.4s ease;
 }
 
+/* Flip animation */
 .card.flipped {
-  background-color: white;
-  color: black;
-  font-size: 28px;
+  background-color: #fff;
+  color: #111;
+  transform: rotateY(180deg);
 }
 
+/* Hover */
+.card:hover {
+  transform: scale(1.05);
+}
+
+/* 🌟 CONTROLS */
+.controls {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.controls button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #1976d2;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.controls button:hover {
+  background-color: #0d47a1;
+}
+
+#pauseBtn {
+  background-color: #43a047;
+}
+
+#pauseBtn:hover {
+  background-color: #2e7d32;
+}
+
+#restartBtn {
+  background-color: #e53935;
+}
+
+#restartBtn:hover {
+  background-color: #c62828;
+}
+
+/* 🌟 CONGRATS POPUP */
 #congrats {
   position: fixed;
-  bottom: 20px;
+  bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
-  background: #ffc107;
+  background: #ffca28;
   padding: 15px 25px;
   border-radius: 12px;
   font-size: 20px;
@@ -80,36 +157,18 @@ html, body {
   color: #222;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   z-index: 9999;
-  animation: popBlast 0.5s ease-out;
+  animation: popBlast 0.6s ease-out;
 }
 
 .hidden {
   display: none;
 }
 
-@keyframes pop {
-  0% { transform: scale(0.6); opacity: 0; }
-  100% { transform: scale(1.2); opacity: 1; }
-}
-
-@keyframes popBlast {
-  0% {
-    transform: translateX(-50%) scale(0.6);
-    opacity: 0;
-  }
-  50% {
-    transform: translateX(-50%) scale(1.1);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(-50%) scale(1);
-  }
-}
-
+/* 🌟 SETTINGS PANEL */
 #settings-panel {
   position: absolute;
-  top: 40px;
-  right: 10px;
+  top: 50px;
+  right: 20px;
   background: #ffffff;
   border: 1px solid #ccc;
   padding: 10px;
@@ -120,78 +179,54 @@ html, body {
 
 #settings-panel label {
   display: block;
-  margin-bottom: 5px;
-}
-
-.controls {
-  margin-top: 10px;
-  display: flex;
-  gap: 10px;
-}
-
-.controls button {
-  padding: 6px 12px;
+  margin-bottom: 6px;
   font-size: 14px;
+}
+
+/* 🌟 POP BLAST ANIMATION */
+@keyframes popBlast {
+  0% { transform: translateX(-50%) scale(0.6); opacity: 0; }
+  50% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
+/* 🌟 START OVERLAY */
+#startOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+#startGameBtn {
+  font-size: 24px;
+  padding: 20px 40px;
   border: none;
-  border-radius: 6px;
-  background-color: #007acc;
-  color: white;
+  border-radius: 10px;
+  background: #fff;
   cursor: pointer;
-  transition: background 0.3s;
 }
 
-.controls button:hover {
-  background-color: #005fa3;
-}
-
-#pauseBtn {
-  background-color: #28a745; /* Green */
-}
-
-#pauseBtn:hover {
-  background-color: #218838;
-}
-
-#restartBtn {
-  background-color: #dc3545; /* Red */
-}
-
-#restartBtn:hover {
-  background-color: #c82333;
-}
-
-/* ✅ MOBILE STYLING */
+/* 🌟 MOBILE RESPONSIVE DESIGN */
 @media (max-width: 600px) {
-  .game-board {
-    grid-template-columns: repeat(3, 70px);
-    gap: 10px;
-    padding: 10px;
-    justify-content: center;
-  }
-
-  .card {
-    width: 70px;
-    height: 70px;
-    font-size: 20px;
-  }
-
-  .card.flipped {
-    font-size: 18px;
-  }
-
   .top-bar, .controls {
     flex-direction: column;
     align-items: center;
     gap: 6px;
   }
 
-  .controls button {
-    width: 120px;
-    font-size: 14px;
+  #timer, #level {
+    font-size: 16px;
   }
 
-  #timer {
-    font-size: 16px;
+  .card {
+    width: 60px;
+    height: 60px;
+    font-size: 22px;
   }
 
   #congrats {
@@ -209,3 +244,4 @@ html, body {
     font-size: 20px;
   }
 }
+
