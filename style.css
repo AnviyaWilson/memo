@@ -73,7 +73,7 @@ button:hover {
   justify-content: center;
   cursor: pointer;
   font-size: 30px;
-  transition: transform 0.3s;
+  transition: transform 0.1s;
 }
 
 .card.flipped {
@@ -81,10 +81,7 @@ button:hover {
   transform: rotateY(180deg);
 }
 
-.card.matched {
-  background-color: #90ee90;
-  cursor: default;
-}
+
 
 .hidden {
   display: none;
@@ -116,3 +113,11 @@ button:hover {
     font-size: 24px;
   }
 }
+.card.matched {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+
+
