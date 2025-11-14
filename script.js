@@ -7,6 +7,11 @@ const pauseBtn = document.getElementById("pauseBtn");
 const restartBtn = document.getElementById("restartBtn");
 const leaveBtn = document.getElementById("leaveBtn");
 
+// ------- SOUND EFFECTS -------
+const flipSound = new Audio("sounds/flip.mp3");
+const matchSound = new Audio("sounds/match,mp3");
+const wrongSound = new Audio("sounds/wrong.mp3");
+
 let level = 1;
 let timeLeft = 15;
 let timer;
@@ -22,8 +27,20 @@ const levelCards = {
   5: 28
 };
 
-const emojis = ["🍎","🍌","🍇","🍉","🍓","🍒","🍍","🥝","🥑","🍑","🍋","🍊",
-                "🍅","🥥","🥕","🌽","🍄","🌶️","🥔","🧄","🥦","🍔","🍟","🍕","🌭","🍿","🧁","🍩","🍪","🍫","🍬"];
+// 👇 define grid layout for each level
+const levelLayout = {
+  1: { rows: 2, cols: 5 },
+  2: { rows: 4, cols: 4 },
+  3: { rows: 4, cols: 5 },
+  4: { rows: 4, cols: 6 },
+  5: { rows: 4, cols: 7 }
+};
+
+const emojis = [
+  "🍎","🍌","🍇","🍉","🍓","🍒","🍍","🥝","🥑","🍑","🍋","🍊",
+  "🍅","🥥","🥕","🌽","🍄","🌶️","🥔","🧄","🥦","🍔","🍟",
+  "🍕","🌭","🍿","🧁","🍩","🍪","🍫","🍬"
+];
 
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
@@ -32,6 +49,12 @@ function shuffle(array) {
 function startLevel(lvl) {
   gameBoard.className = `game-board level-${lvl}`;
   gameBoard.innerHTML = "";
+
+  // Set grid layout
+  const { rows, cols } = levelLayout[lvl];
+  gameBoard.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+  gameBoard.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
   const numCards = levelCards[lvl];
   const chosen = shuffle(emojis.slice(0, numCards / 2));
   const cardsArray = shuffle([...chosen, ...chosen]);
@@ -58,6 +81,10 @@ function handleFlip(e) {
   const card = e.currentTarget;
   if (card.classList.contains("flipped") || flippedCards.length === 2) return;
 
+  // 🔊 FLIP SOUND
+  flipSound.currentTime = 0;
+  flipSound.play();
+
   card.classList.add("flipped");
   card.innerHTML = card.dataset.symbol;
   flippedCards.push(card);
@@ -70,19 +97,40 @@ function handleFlip(e) {
 function checkMatch() {
   const [a, b] = flippedCards;
   if (a.dataset.symbol === b.dataset.symbol) {
+
+    // 🔊 MATCH SOUND
+    matchSound.currentTime = 0;
+    matchSound.play();
+
+    // ✅ Make matched cards fade out but keep their place
+    a.classList.add("matched");
+    b.classList.add("matched");
+
+    // Hide their symbols after animation
+    setTimeout(() => {
+      a.style.visibility = "hidden";
+      b.style.visibility = "hidden";
+    }, 500);
+
     matchedCount += 2;
     flippedCards = [];
+
     if (matchedCount === levelCards[level]) {
       levelComplete();
     }
   } else {
+
+    // 🔊 WRONG SOUND
+    wrongSound.currentTime = 0;
+    wrongSound.play();
+
     setTimeout(() => {
       a.classList.remove("flipped");
       b.classList.remove("flipped");
       a.innerHTML = "";
       b.innerHTML = "";
       flippedCards = [];
-    }, 800);
+    }, 0);
   }
 }
 
@@ -140,8 +188,6 @@ function resetToLevel1() {
 }
 
 startLevel(level);
-
-startTimer();
 
 
 
